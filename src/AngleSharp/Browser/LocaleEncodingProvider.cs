@@ -10,35 +10,35 @@ namespace AngleSharp.Browser
     /// </summary>
     public class LocaleEncodingProvider : IEncodingProvider
     {
-        private static readonly Dictionary<String, Encoding> suggestions = new Dictionary<String, Encoding>(StringComparer.OrdinalIgnoreCase)
+        private static readonly Dictionary<String, Lazy<Encoding>> suggestions = new(StringComparer.OrdinalIgnoreCase)
         {
-            { "ar", TextEncoding.Utf8 },
-            { "cy", TextEncoding.Utf8 },
-            { "fa", TextEncoding.Utf8 },
-            { "hr", TextEncoding.Utf8 },
-            { "kk", TextEncoding.Utf8 },
-            { "mk", TextEncoding.Utf8 },
-            { "or", TextEncoding.Utf8 },
-            { "ro", TextEncoding.Utf8 },
-            { "sr", TextEncoding.Utf8 },
-            { "vi", TextEncoding.Utf8 },
-            { "be", TextEncoding.Latin5 },
-            { "bg", TextEncoding.Windows1251 },
-            { "ru", TextEncoding.Windows1251 },
-            { "uk", TextEncoding.Windows1251 },
-            { "cs", TextEncoding.Latin2 },
-            { "hu", TextEncoding.Latin2 },
-            { "pl", TextEncoding.Latin2 },
-            { "sl", TextEncoding.Latin2 },
-            { "tr", TextEncoding.Windows1254 },
-            { "ku", TextEncoding.Windows1254 },
-            { "he", TextEncoding.Windows1255 },
-            { "lv", TextEncoding.Latin13 },
-            { "ja", TextEncoding.Utf8 }, //  Windows-31J ???? Replaced by something better anyway
-            { "ko", TextEncoding.Korean },
-            { "lt", TextEncoding.Windows1257 },
-            { "sk", TextEncoding.Windows1250 },
-            { "th", TextEncoding.Windows874 }
+            { "ar", new (() => TextEncoding.Utf8 )},
+            { "cy", new (() => TextEncoding.Utf8 )},
+            { "fa", new (() => TextEncoding.Utf8 )},
+            { "hr", new (() => TextEncoding.Utf8 )},
+            { "kk", new (() => TextEncoding.Utf8 )},
+            { "mk", new (() => TextEncoding.Utf8 )},
+            { "or", new (() => TextEncoding.Utf8 )},
+            { "ro", new (() => TextEncoding.Utf8 )},
+            { "sr", new (() => TextEncoding.Utf8 )},
+            { "vi", new (() => TextEncoding.Utf8 )},
+            { "be", new (() => TextEncoding.Latin5 )},
+            { "bg", new (() => TextEncoding.Windows1251 )},
+            { "ru", new (() => TextEncoding.Windows1251 )},
+            { "uk", new (() => TextEncoding.Windows1251 )},
+            { "cs", new (() => TextEncoding.Latin2 )},
+            { "hu", new (() => TextEncoding.Latin2 )},
+            { "pl", new (() => TextEncoding.Latin2 )},
+            { "sl", new (() => TextEncoding.Latin2 )},
+            { "tr", new (() => TextEncoding.Windows1254 )},
+            { "ku", new (() => TextEncoding.Windows1254 )},
+            { "he", new (() => TextEncoding.Windows1255 )},
+            { "lv", new (() => TextEncoding.Latin13 )},
+            { "ja", new (() => TextEncoding.Utf8 )}, //  Windows-31J ???? Replaced by something better anyway
+            { "ko", new (() => TextEncoding.Korean )},
+            { "lt", new (() => TextEncoding.Windows1257 )},
+            { "sk", new (() => TextEncoding.Windows1250 )},
+            { "th", new (() => TextEncoding.Windows874 )}
         };
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace AngleSharp.Browser
 
                 if (suggestions.TryGetValue(name, out var encoding))
                 {
-                    return encoding;
+                    return encoding.Value;
                 }
                 else if (locale.Isi("zh-cn"))
                 {
